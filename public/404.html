@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/my_first_web/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>应用标题</title>
+    <script>
+      const path = window.location.pathname;
+      if (path.startsWith('/my_first_web/')) {
+        window.location.replace('/my_first_web/index.html' + path.replace('/my_first_web', ''));
+      } else {
+        window.location.replace('/my_first_web/');
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
