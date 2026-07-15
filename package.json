@@ -1,10 +1,10 @@
 {
-  "name": "miaoda-vite-react-app",
+  "name": "my_first_web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/dev.mjs",
+    "dev": "vite",
     "build": "vite build",
     "typecheck": "tsc -p tsconfig.app.json",
     "lint": "concurrently npm:typecheck npm:lint:eslint",
@@ -78,9 +78,14 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5",
+    "@eslint/js": "^9",
     "concurrently": "^9",
     "eslint": "^9",
+    "eslint-plugin-react-hooks": "^5",
+    "eslint-plugin-react-refresh": "^0.4",
+    "globals": "^16",
     "typescript": "~5.9",
+    "typescript-eslint": "^8",
     "vite": "^8"
   }
 }

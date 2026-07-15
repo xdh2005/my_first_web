@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
-import { scopedStorage } from '@lark-apaas/client-toolkit-lite';
 import AppSidebar from '@/components/AppSidebar';
 import ProgressHeader from '@/components/ProgressHeader';
 import QuestionCard from '@/components/QuestionCard';
@@ -31,7 +30,7 @@ export default function ReviewPage() {
   // 从本地存储加载已掌握题目
   useEffect(() => {
     try {
-      const saved = scopedStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const ids = JSON.parse(saved) as string[];
         setMasteredIds(new Set(ids));
@@ -44,7 +43,7 @@ export default function ReviewPage() {
   // 保存到本地存储
   useEffect(() => {
     try {
-      scopedStorage.setItem(STORAGE_KEY, JSON.stringify([...masteredIds]));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...masteredIds]));
     } catch {
       // ignore
     }

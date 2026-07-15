@@ -3,7 +3,6 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import AppSidebar from "@/components/AppSidebar";
 import { MOCK_QUESTIONS, type QuestionCategory } from "@/data/questions";
 import { useState, useEffect, useMemo } from "react";
-import { scopedStorage } from "@lark-apaas/client-toolkit-lite";
 import { GraduationCap, BookOpen, FileText, PenTool, Home } from "lucide-react";
 
 const STORAGE_KEY = 'xi-thought-review-mastered';
@@ -23,7 +22,7 @@ export const Layout = () => {
 
   useEffect(() => {
     try {
-      const saved = scopedStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const ids = JSON.parse(saved) as string[];
         setMasteredIds(new Set(ids));
