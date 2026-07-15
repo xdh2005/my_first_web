@@ -3,9 +3,20 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/s
 import AppSidebar from "@/components/AppSidebar";
 import { MOCK_QUESTIONS, type QuestionCategory } from "@/data/questions";
 import { useState, useEffect, useMemo } from "react";
-import { GraduationCap, BookOpen, FileText, PenTool, Home } from "lucide-react";
+import { GraduationCap, BookOpen, FileText, PenTool, Home, RotateCcw, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const STORAGE_KEY = 'xi-thought-review-mastered';
+
+const CATEGORY_LABELS: Record<QuestionCategory, string> = {
+  'short-answer-2025': '2025春 简答题',
+  'essay-2025': '2025春 论述题',
+  'material-2025': '2025春 材料题',
+  'short-answer-2024': '2024春 简答题',
+  'essay-2024': '2024春 论述题',
+  'material-2024': '2024春 材料题',
+};
 
 const NAV_ITEMS = [
   { path: '/', label: '首页', icon: Home, group: 'CET-4 复习' },
@@ -68,17 +79,42 @@ export const Layout = () => {
           />
 
           <SidebarInset className="flex flex-col min-w-0">
-            <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border/30 bg-white/60 px-4 backdrop-blur-xl md:px-6">
+            <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border/30 bg-white/80 px-4 backdrop-blur-xl md:px-6 shadow-sm">
               <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
               <div className="flex items-center gap-3">
                 <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-orange-500 text-primary-foreground shadow-lg shadow-primary/30">
                   <GraduationCap className="size-5" />
                 </div>
                 <div className="hidden md:block">
-                  <div className="text-sm font-bold text-sidebar-foreground">学习助手</div>
+                  <div className="text-sm font-bold text-foreground">学习助手</div>
                   <div className="text-xs text-muted-foreground">CET-4 · 习思想 · 高效复习</div>
                 </div>
               </div>
+
+              <div className="hidden xl:flex items-center gap-2 ml-auto">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
+                  <ChevronRight className="size-3.5 text-primary" />
+                  <span className="text-sm font-medium text-primary">{CATEGORY_LABELS[activeCategory]}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    const categoryQuestions = MOCK_QUESTIONS.filter((q) => q.category === activeCategory);
+                    setMasteredIds((prev) => {
+                      const next = new Set(prev);
+                      categoryQuestions.forEach((q) => next.delete(q.id));
+                      return next;
+                    });
+                    toast.info('已重置当前分类进度');
+                  }}
+                  className="gap-1.5 text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                >
+                  <RotateCcw className="size-3.5" />
+                  重置进度
+                </Button>
+              </div>
+
               <nav className="hidden lg:flex flex-1 justify-end items-center gap-1">
                 {GROUPS.map((group) => (
                   <div key={group} className="flex flex-col mr-2">
@@ -91,10 +127,10 @@ export const Layout = () => {
                           <Link
                             key={item.path}
                             to={item.path}
-                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                               isActive
-                                ? 'bg-primary/10 text-primary shadow-sm'
-                                : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+                                ? 'bg-primary/15 text-primary shadow-md shadow-primary/10'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                             }`}
                           >
                             <Icon className="size-4" />

@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import ProgressHeader from '@/components/ProgressHeader';
 import QuestionCard from '@/components/QuestionCard';
 import { MOCK_QUESTIONS, type QuestionCategory } from '@/data/questions';
@@ -131,25 +130,6 @@ export default function ReviewPage() {
         <div className="absolute bottom-0 left-1/3 size-80 rounded-full bg-amber-200/30 blur-3xl" />
       </div>
 
-      {/* 顶部栏 */}
-      <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border/30 bg-white/60 px-4 backdrop-blur-xl md:px-6">
-        <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
-        <div className="flex-1 min-w-0">
-          <h1 className="text-lg font-bold text-foreground truncate">
-            {CATEGORY_LABELS[activeCategory]}
-          </h1>
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={resetCategory}
-          className="gap-1.5 border-border/60 text-muted-foreground hover:text-foreground"
-        >
-          <RotateCcw className="size-3.5" />
-          重置进度
-        </Button>
-      </header>
-
       {/* 主内容区 */}
       <main className="flex-1 overflow-y-auto px-4 py-6 md:px-8 md:py-8">
         <div className="mx-auto max-w-5xl space-y-6">
@@ -163,16 +143,18 @@ export default function ReviewPage() {
           />
 
           {/* 搜索与筛选 */}
-          <div className="rounded-2xl border border-border/50 bg-white/60 p-4 backdrop-blur-xl">
+          <div className="rounded-2xl border border-border/40 bg-white/80 p-4 backdrop-blur-xl shadow-sm hover:shadow-md transition-shadow duration-300">
             <div className="flex flex-col gap-3 md:flex-row md:items-center">
               <div className="relative flex-1">
-                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center justify-center">
+                  <Search className="size-4 text-muted-foreground" />
+                </div>
                 <Input
                   type="search"
                   value={keyword}
                   onChange={(e) => setKeyword(e.target.value)}
                   placeholder="搜索题目关键词..."
-                  className="pl-9 bg-background/60 border-border/50 focus-visible:ring-primary/30"
+                  className="h-11 pl-10 bg-background/80 border-border/50 text-sm focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:border-primary/50 transition-all duration-200"
                 />
               </div>
               <Tabs
@@ -180,17 +162,17 @@ export default function ReviewPage() {
                 onValueChange={(v) => setFilterMode(v as typeof filterMode)}
                 className="w-full md:w-auto"
               >
-                <TabsList className="grid w-full grid-cols-3 md:w-[280px]">
-                  <TabsTrigger value="all" className="gap-1.5">
-                    <Filter className="size-3.5" />
+                <TabsList className="grid w-full grid-cols-3 md:w-[260px] h-11 bg-muted/50">
+                  <TabsTrigger value="all" className="gap-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all duration-200">
+                    <Filter className="size-4" />
                     全部
                   </TabsTrigger>
-                  <TabsTrigger value="unmastered" className="gap-1.5">
-                    <CircleDashed className="size-3.5" />
+                  <TabsTrigger value="unmastered" className="gap-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all duration-200">
+                    <CircleDashed className="size-4" />
                     未掌握
                   </TabsTrigger>
-                  <TabsTrigger value="mastered" className="gap-1.5">
-                    <CheckCircle2 className="size-3.5" />
+                  <TabsTrigger value="mastered" className="gap-2 text-sm font-medium data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm transition-all duration-200">
+                    <CheckCircle2 className="size-4" />
                     已掌握
                   </TabsTrigger>
                 </TabsList>
@@ -201,30 +183,45 @@ export default function ReviewPage() {
           {/* 题目列表 */}
           <div className="space-y-4">
             {currentQuestions.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-border/60 bg-white/40 p-12 text-center backdrop-blur-xl">
-                <div className="mx-auto mb-3 flex size-14 items-center justify-center rounded-2xl bg-muted/60">
-                  <Search className="size-6 text-muted-foreground" />
+              <div className="rounded-2xl border border-dashed border-border/40 bg-white/60 p-16 text-center backdrop-blur-xl">
+                <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-primary/5">
+                  <Search className="size-8 text-primary/60" />
                 </div>
-                <div className="text-base font-medium text-foreground">暂无匹配题目</div>
-                <div className="mt-1 text-sm text-muted-foreground">
+                <div className="text-lg font-semibold text-foreground">暂无匹配题目</div>
+                <div className="mt-2 text-sm text-muted-foreground">
                   试试调整筛选条件或搜索关键词
                 </div>
+                {keyword && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setKeyword('')}
+                    className="mt-4 text-sm"
+                  >
+                    清除搜索
+                  </Button>
+                )}
               </div>
             ) : (
-              currentQuestions.map((q, i) => (
-                <QuestionCard
-                  key={q.id}
-                  question={{ ...q, mastered: masteredIds.has(q.id) }}
-                  index={i}
-                  onToggleMastered={toggleMastered}
-                />
-              ))
+              <div className="space-y-3">
+                {currentQuestions.map((q, i) => (
+                  <QuestionCard
+                    key={q.id}
+                    question={{ ...q, mastered: masteredIds.has(q.id) }}
+                    index={i}
+                    onToggleMastered={toggleMastered}
+                  />
+                ))}
+              </div>
             )}
           </div>
 
           {/* 底部提示 */}
-          <div className="pt-4 text-center text-xs text-muted-foreground">
-            共 {currentQuestions.length} 道题目 · 学习进度自动保存到本地
+          <div className="pt-6 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 text-xs text-muted-foreground backdrop-blur-sm">
+              <span className="font-medium text-foreground">{currentQuestions.length}</span>
+              道题目 · 学习进度自动保存到本地
+            </div>
           </div>
         </div>
       </main>

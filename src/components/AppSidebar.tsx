@@ -76,14 +76,14 @@ export default function AppSidebar({
                       <SidebarMenuButton
                         asChild
                         tooltip={item.label}
-                        className="group"
+                        className="group relative"
                       >
                         <Link
                           to={item.path}
-                          className="flex w-full items-center gap-3"
+                          className="flex w-full items-center gap-3 transition-all duration-200"
                         >
-                          <Icon className="size-4 shrink-0" />
-                          <span className="flex-1 truncate group-data-[state=collapsed]:hidden">
+                          <Icon className="size-4 shrink-0 transition-colors duration-200" />
+                          <span className="flex-1 truncate group-data-[state=collapsed]:hidden transition-colors duration-200">
                             {item.label}
                           </span>
                         </Link>
@@ -94,26 +94,37 @@ export default function AppSidebar({
                 const isActive = activeCategory === item.category;
                 const mastered = masteredCount[item.category!] ?? 0;
                 const total = totalCount[item.category!] ?? 0;
+                const progress = total > 0 ? (mastered / total) * 100 : 0;
                 return (
                   <SidebarMenuItem key={item.category}>
                     <SidebarMenuButton
                         asChild
                         isActive={isActive}
                         tooltip={`${group} ${item.label}`}
-                        className="group"
+                        className="group relative"
                       >
                         <Link
                           to="/practice"
-                          className="flex w-full items-center gap-3"
+                          className="flex w-full items-center gap-3 transition-all duration-200"
+                          onClick={() => onCategoryChange(item.category!)}
                         >
-                          <Icon className="size-4 shrink-0" />
-                          <span className="flex-1 truncate group-data-[state=collapsed]:hidden">
+                          <div className={`flex size-8 items-center justify-center rounded-lg transition-all duration-200 ${
+                            isActive ? 'bg-primary/15 text-primary' : 'text-muted-foreground group-hover:bg-muted/50 group-hover:text-foreground'
+                          }`}>
+                            <Icon className="size-4 shrink-0" />
+                          </div>
+                          <span className={`flex-1 truncate group-data-[state=collapsed]:hidden transition-colors duration-200 ${
+                            isActive ? 'text-primary font-medium' : 'text-foreground group-hover:text-foreground'
+                          }`}>
                             {item.label}
                           </span>
                           <span className="shrink-0 text-xs text-muted-foreground group-data-[state=collapsed]:hidden">
                             {mastered}/{total}
                           </span>
                         </Link>
+                        {isActive && (
+                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-r-full bg-gradient-to-b from-primary to-orange-500" />
+                        )}
                       </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
