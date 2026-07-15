@@ -50,7 +50,7 @@ export const Layout = () => {
     return stats;
   }, [masteredIds]);
 
-  const activeCategory = 'short-answer-2025';
+  const [activeCategory, setActiveCategory] = useState<QuestionCategory>('short-answer-2025');
 
   return (
     <div className="min-h-screen">
@@ -58,7 +58,7 @@ export const Layout = () => {
         <div className="flex min-h-screen w-full">
           <AppSidebar
             activeCategory={activeCategory}
-            onCategoryChange={() => {}}
+            onCategoryChange={(cat) => setActiveCategory(cat)}
             masteredCount={Object.fromEntries(
               Object.entries(categoryStats).map(([k, v]) => [k, v.mastered])
             ) as Record<QuestionCategory, number>}
@@ -109,7 +109,7 @@ export const Layout = () => {
             </header>
 
             <main className="flex-1 overflow-y-auto">
-              <Outlet />
+              <Outlet context={{ activeCategory, setActiveCategory }} />
             </main>
           </SidebarInset>
         </div>
