@@ -1,12 +1,12 @@
-import path from 'path'
-import { defineConfig } from '@lark-apaas/coding-preset-vite-react'
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   base: '/my_first_web/',
+  plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-      '@shared': path.resolve(__dirname, 'shared'),
+      '@': new URL('./src', import.meta.url).pathname,
     },
   },
 })
