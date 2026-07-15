@@ -1,4 +1,5 @@
 import { BookOpen, FileText, ScrollText, GraduationCap, Home, PenTool } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   Sidebar,
   SidebarContent,
@@ -77,15 +78,15 @@ export default function AppSidebar({
                         tooltip={item.label}
                         className="group"
                       >
-                        <a
-                          href={item.path}
+                        <Link
+                          to={item.path}
                           className="flex w-full items-center gap-3"
                         >
                           <Icon className="size-4 shrink-0" />
                           <span className="flex-1 truncate group-data-[state=collapsed]:hidden">
                             {item.label}
                           </span>
-                        </a>
+                        </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   );
@@ -96,26 +97,24 @@ export default function AppSidebar({
                 return (
                   <SidebarMenuItem key={item.category}>
                     <SidebarMenuButton
-                      asChild
-                      isActive={isActive}
-                      tooltip={`${group} ${item.label}`}
-                      className="group"
-                    >
-                      <button
-                        onClick={() => {
-                          window.location.href = '/practice';
-                        }}
-                        className="flex w-full items-center gap-3"
+                        asChild
+                        isActive={isActive}
+                        tooltip={`${group} ${item.label}`}
+                        className="group"
                       >
-                        <Icon className="size-4 shrink-0" />
-                        <span className="flex-1 truncate group-data-[state=collapsed]:hidden">
-                          {item.label}
-                        </span>
-                        <span className="shrink-0 text-xs text-muted-foreground group-data-[state=collapsed]:hidden">
-                          {mastered}/{total}
-                        </span>
-                      </button>
-                    </SidebarMenuButton>
+                        <Link
+                          to="/practice"
+                          className="flex w-full items-center gap-3"
+                        >
+                          <Icon className="size-4 shrink-0" />
+                          <span className="flex-1 truncate group-data-[state=collapsed]:hidden">
+                            {item.label}
+                          </span>
+                          <span className="shrink-0 text-xs text-muted-foreground group-data-[state=collapsed]:hidden">
+                            {mastered}/{total}
+                          </span>
+                        </Link>
+                      </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
               })}

@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, Link } from "react-router-dom";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
 import { MOCK_QUESTIONS, type QuestionCategory } from "@/data/questions";
@@ -88,9 +88,9 @@ export const Layout = () => {
                         const Icon = item.icon;
                         const isActive = location.pathname === item.path;
                         return (
-                          <a
+                          <Link
                             key={item.path}
-                            href={item.path}
+                            to={item.path}
                             className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                               isActive
                                 ? 'bg-primary/10 text-primary shadow-sm'
@@ -99,7 +99,7 @@ export const Layout = () => {
                           >
                             <Icon className="size-4" />
                             {item.label}
-                          </a>
+                          </Link>
                         );
                       })}
                     </div>
