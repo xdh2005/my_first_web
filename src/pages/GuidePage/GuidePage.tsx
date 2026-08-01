@@ -1,4 +1,4 @@
-import { BookOpen, Sparkles, Zap, PenTool } from 'lucide-react';
+import { BookOpen, Zap, PenTool } from 'lucide-react';
 
 export default function GuidePage() {
   return (
