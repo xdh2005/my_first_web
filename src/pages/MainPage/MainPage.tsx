@@ -1,4 +1,3 @@
-import { BookOpen, PenTool, Sparkles, Target } from 'lucide-react';
 
 export default function MainPage() {
   return (

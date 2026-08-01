@@ -43,7 +43,6 @@ interface AppSidebarProps {
 
 export default function AppSidebar({
   activeCategory,
-  onCategoryChange,
   masteredCount,
   totalCount,
 }: AppSidebarProps) {
