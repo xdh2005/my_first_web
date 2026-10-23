@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Trophy, Target, Flame, BookCheck, TrendingUp, Award } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
 
 interface ProgressHeaderProps {
   totalMastered: number;

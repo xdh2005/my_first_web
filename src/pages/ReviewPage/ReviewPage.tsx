@@ -3,7 +3,7 @@ import { useOutletContext } from 'react-router-dom';
 import ProgressHeader from '@/components/ProgressHeader';
 import QuestionCard from '@/components/QuestionCard';
 import { MOCK_QUESTIONS, type QuestionCategory } from '@/data/questions';
-import { Search, RotateCcw, Filter, CheckCircle2, CircleDashed } from 'lucide-react';
+import { Search, Filter, CheckCircle2, CircleDashed } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -21,9 +21,8 @@ const CATEGORY_LABELS: Record<QuestionCategory, string> = {
 const STORAGE_KEY = 'xi-thought-review-mastered';
 
 export default function ReviewPage() {
-  const { activeCategory, setActiveCategory } = useOutletContext<{
+  const { activeCategory } = useOutletContext<{
     activeCategory: QuestionCategory;
-    setActiveCategory: (cat: QuestionCategory) => void;
   }>();
   const [masteredIds, setMasteredIds] = useState<Set<string>>(new Set());
   const [keyword, setKeyword] = useState('');
@@ -64,17 +63,6 @@ export default function ReviewPage() {
       }
       return next;
     });
-  };
-
-  // 重置当前分类进度
-  const resetCategory = () => {
-    const categoryQuestions = MOCK_QUESTIONS.filter((q) => q.category === activeCategory);
-    setMasteredIds((prev) => {
-      const next = new Set(prev);
-      categoryQuestions.forEach((q) => next.delete(q.id));
-      return next;
-    });
-    toast.info('已重置当前分类进度');
   };
 
   // 各分类统计

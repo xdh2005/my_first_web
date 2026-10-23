@@ -94,7 +94,6 @@ export default function AppSidebar({
                 const isActive = activeCategory === item.category;
                 const mastered = masteredCount[item.category!] ?? 0;
                 const total = totalCount[item.category!] ?? 0;
-                const progress = total > 0 ? (mastered / total) * 100 : 0;
                 return (
                   <SidebarMenuItem key={item.category}>
                     <SidebarMenuButton
@@ -105,7 +104,7 @@ export default function AppSidebar({
                       >
                         <Link
                           to="/practice"
-                          className="flex w-full items-center gap-3 transition-all duration-200"
+                          className="flex w-full items-center gap-3 transition-all duration-200 relative"
                           onClick={() => onCategoryChange(item.category!)}
                         >
                           <div className={`flex size-8 items-center justify-center rounded-lg transition-all duration-200 ${
@@ -121,10 +120,10 @@ export default function AppSidebar({
                           <span className="shrink-0 text-xs text-muted-foreground group-data-[state=collapsed]:hidden">
                             {mastered}/{total}
                           </span>
+                          {isActive && (
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-r-full bg-gradient-to-b from-primary to-orange-500" />
+                          )}
                         </Link>
-                        {isActive && (
-                          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 rounded-r-full bg-gradient-to-b from-primary to-orange-500" />
-                        )}
                       </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
